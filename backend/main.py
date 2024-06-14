@@ -12,7 +12,7 @@ UPLOAD_FOLDER = 'uploads/'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Specify the path to Tesseract executable if necessary
+
 pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
 @app.route('/upload', methods=['POST'])
@@ -25,7 +25,7 @@ def upload_file():
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
     
-    # Normalize the file extension to be case insensitive
+    
     file_extension = file.filename.lower().endswith('.pdf')
     
     if file and file_extension:
@@ -44,21 +44,17 @@ def convert_pdf_to_docx(pdf_path):
     images = convert_from_path(pdf_path)
     doc = Document()
     
-    # Extract text using pytesseract
     text = ""
     for image in images:
         text += pytesseract.image_to_string(image)
     
-    # Create a new DOCX file
     for line in text.split('\n'):
         if line.strip() != '':
             doc.add_paragraph(line)
     
-    # Save DOCX file
     docx_path = pdf_path.replace('.pdf', '.docx').replace('.PDF', '.docx')
     doc.save(docx_path)
     
-    # Analyze the DOCX file
     analysis = analyze_docx(doc)
     
     return docx_path, analysis

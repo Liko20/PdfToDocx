@@ -37,10 +37,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 messageDiv.textContent = 'File uploaded successfully!';
                 const data = await response.json();
                 
-                count.innerHTML=`no_of_sentences=${data.analysis.num_sentences}  no_of_words=${data.analysis.num_words} no_of_characters=${data.analysis.num_characters} no_of_lines=${data.analysis.num_lines}`;
+                count.innerHTML=`no_of_sentences = ${data.analysis.num_sentences}  no_of_words = ${data.analysis.num_words} no_of_characters = ${data.analysis.num_characters} no_of_lines = ${data.analysis.num_lines}`;
                 console.log(`Uploaded file: ${fileName}`);
 
-                // Replace both .pdf and .PDF with .docx using case-insensitive regex
+                
                 const docxFileName = fileName.toLowerCase().replace('.pdf', '.docx');
                 //console.log(docxFileName)
                 const downloadResponse = await fetch(`http://127.0.0.1:5000/download/${docxFileName}`, {
